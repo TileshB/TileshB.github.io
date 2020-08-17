@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <script>
+        AFRAME.registerComponent('move-out', {
+            init: function(){
+                var data = this.data;
+                var el = this.el;
+
+            }
+        });
+    </script>
+
+  </head>
+  <body>
+    <a-scene renderer="colorManagement: true" background="color: black">
+      <a-assets>
+        <img id="sky" src="./assets/world.jpg" />
+        <img id="paris" src="./assets/paris2.jpg" />
+        <img id="grass" src="./assets/grass.jpg" />
+        <img id="intro" src="./assets/intro_screen.png" />
+        <img id="start" src="./assets/start.png" />
+        <a-asset-item id="plumblob" src="./assets/3D/plumblob.glb"></a-asset-item>
+        <a-asset-item id="res" src="./assets/3D/res_room.glb"></a-asset-item>
+        <!-- <a-asset-item 
+          id="codey" 
+          src="codey.gltf"></a-asset-item> -->
+        <!-- Add file here -->
+        <!-- <audio 
+          id="air" 
+          src="noise.wav"></audio> -->
+      </a-assets>
+      <!-- <a-scene stats></a-scene> -->
+
+      <a-sky id="skyObj" src="#sky"
+      animation__fadein="startEvents: fadein; property: material.opacity; from: 0; to: 1; dur: 1000;"
+     animation__fadeout="startEvents: fadeout; property: material.opacity; from: 1; to: 0; dur: 1000;"></a-sky>
+      <!-- Cursor -->
+      <a-entity position="0 1.73 0">
+        <a-entity camera look-controls>
+          <!-- cursor -->
+          <a-entity
+            animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 0.3 0.3 0.3"
+            animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 0.3 0.3 0.3; to: 0.1 0.1 0.1"
+            animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 0.3 0.3 0.3"
+            cursor="fuse: true;"
+            position="0 0 -1"
+            raycaster="far: 20; interval: 1000; objects: .clickable"
+            geometry="primitive: ring; radiusInner: 0.1; radiusOuter: 0.15;"
+            material="color: cyan; shader: flat"
+            scale="0.3 0.3 0.3"
+          >
+          </a-entity>
+        </a-entity>
+      </a-entity>
+      <!-- end of cursor -->
+      <!-- End of cursor -->
+      <a-plane
+        src="#grass"
+        rotation="-90 0 0"
+        width="50"
+        height="50"
+        material=" repeat: 10 10"
+      ></a-plane>
+      <a-image
+        id="intro-screen"
+        src="#intro"
+        width="2"
+        height="1"
+        position="0 2 -2"
+        animation="property: object3D.position.y;
+          to: 2.2; 
+          dir: alternate;
+          easing: easeInOutQuad;
+          dur: 2000; 
+          loop: true"
+          animation__leave="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 10 -2; startEvents:go"
+          animation__leave2="property:components.material.material.opacity; dur: 1000; easing: easeInCubic; loop:false; to: 0 ; startEvents: go"
+
+      ></a-image>
+      <a-image
+        id="startBtn"
+        class="clickable"
+        src="#start"
+        position="0 1.2 -1.5"
+        width="0.5"
+        height="0.5"
+        proxy-event__click="event: click; to:#intro-screen; as: go "
+        animation__click="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 5 1.2 -1.5; startEvents: click"
+        animation__click2="property:components.material.material.opacity; dur: 1000; easing: easeInCubic; loop:false; to: 0 ; startEvents: click"
+      ></a-image>
+      <a-entity
+      id="plum"
+      gltf-model="#plumblob"
+      position="0 -2.2 0"
+      scale="0.001 0.001 0.001"
+      animation-mixer="clip: Plumbob|PlumbobAction.001"
+      proxy-event__click-go="event: click; to:#resRoom; as: leave"
+     >
+      </a-entity>
+      <a-entity
+      id="resRoom"
+      gltf-model="#res"
+      position="-1.89 -2.5 -1.942"
+      scale="0.25 0.25 0.25"
+      animation__clickRoom="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 1.288 -1.942; startEvents: click"
+      animation__clickLeave="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 -2.5 -1.942; startEvents: leave"
+      ></a-entity>
+      <!-- <a-entity
+        text="value: Welcome!; color: #FFD500; align: center"
+        position="0 3 -4"
+        scale="6 6 6"
+        animation="property: object3D.position.y;
+          to: 3.2; 
+          dir: alternate; 
+          dur: 2000; 
+          loop: true"></a-entity>   -->
+      <!-- <a-entity 
+        gltf-model="#codey" 
+        position="0 2 -4" 
+        scale="0.5 0.5 0.5"
+        animation="property: object3D.position.y;
+          to: 2.2; 
+          dir: alternate; 
+          dur: 2000; 
+          loop: true"></a-entity>
+      <a-light 
+        type="point" 
+        intensity="2" 
+        position="2 4 4"></a-light> -->
+      <!-- Add entity here: -->
+      <!-- <a-sound src="#air" autoplay="true"></a-sound> -->
+      <!-- End of art -->
+    </a-scene>
+    <script>
+      var start = document.querySelector("#startBtn");
+      start.addEventListener("click", function (evt) {
+        console.log("I clicked on btn ");
+        beginAnim()
+      });
+
+      function setClicky(obj){
+        obj.addEventListener("click", function (evt) {
+          console.log("Next triggered")
+      });
+      }
+
+      function destroyObj(obj){
+        setTimeout(() => {
+          obj.parentNode.removeChild(obj);
+        }, 1500);
+        var sky = document.querySelector("#skyObj");
+          sky.emit('fadeout');
+          setTimeout(() => {
+            sky.setAttribute("src", "#paris")
+          sky.emit('fadein');
+          }, 1000);
+      }
+
+      function beginAnim(){
+        var resTime= 10000;
+        var room = document.querySelector("#resRoom");
+        setClicky(room);
+        room.click();
+        
+        var plum = document.querySelector("#plum");
+        setClicky(plum)
+        setTimeout(function(){ plum.click(), destroyObj(room)  }, resTime);
+      }
+  </script>
+  </body>
+</html>
