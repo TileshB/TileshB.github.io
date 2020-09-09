@@ -3,16 +3,7 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
-    <script>
-        AFRAME.registerComponent('move-out', {
-            init: function(){
-                var data = this.data;
-                var el = this.el;
-
-            }
-        });
-    </script>
-
+    <script></script>
   </head>
   <body>
     <a-scene renderer="colorManagement: true" background="color: black">
@@ -22,21 +13,29 @@
         <img id="grass" src="./assets/grass.jpg" />
         <img id="intro" src="./assets/intro_screen.png" />
         <img id="start" src="./assets/start.png" />
-        <a-asset-item id="plumblob" src="./assets/3D/plumblob.glb"></a-asset-item>
+        <a-asset-item
+          id="plumblob"
+          src="./assets/3D/plumblob.glb"
+        ></a-asset-item>
         <a-asset-item id="res" src="./assets/3D/res_room.glb"></a-asset-item>
-        <!-- <a-asset-item 
-          id="codey" 
-          src="codey.gltf"></a-asset-item> -->
+        <a-asset-item
+          id="house"
+          src="./assets/3D/house_comb.glb"
+        ></a-asset-item>
+        <a-asset-item id="mem" src="./assets/3D/memories.glb"></a-asset-item>
+        <a-asset-item id="emoji" src="./assets/3D/emojis.glb"></a-asset-item>
+        <video id="proposal" src="./assets/proposal-vid-done.mp4"></video>
         <!-- Add file here -->
         <!-- <audio 
           id="air" 
           src="noise.wav"></audio> -->
       </a-assets>
-      <!-- <a-scene stats></a-scene> -->
-
-      <a-sky id="skyObj" src="#sky"
-      animation__fadein="startEvents: fadein; property: material.opacity; from: 0; to: 1; dur: 1000;"
-     animation__fadeout="startEvents: fadeout; property: material.opacity; from: 1; to: 0; dur: 1000;"></a-sky>
+      <a-sky
+        id="skyObj"
+        src="#sky"
+        animation__fadein="startEvents: fadein; property: material.opacity; from: 0; to: 1; dur: 1000;"
+        animation__fadeout="startEvents: fadeout; property: material.opacity; from: 1; to: 0; dur: 1000;"
+      ></a-sky>
       <!-- Cursor -->
       <a-entity>
         <a-entity position="0 1.73 0" camera look-controls>
@@ -58,11 +57,13 @@
       <!-- end of cursor -->
       <!-- End of cursor -->
       <a-plane
+      id="grassObj"
         src="#grass"
         rotation="-90 0 0"
         width="50"
         height="50"
         material=" repeat: 10 10"
+        animation__fadeOut="property: material.opacity; from: 1; to: 0; dur: 1000; startEvents: fadeout"
       ></a-plane>
       <a-image
         id="intro-screen"
@@ -70,15 +71,7 @@
         width="2"
         height="1"
         position="0 2 -2"
-        animation="property: object3D.position.y;
-          to: 2.2; 
-          dir: alternate;
-          easing: easeInOutQuad;
-          dur: 2000; 
-          loop: true"
-          animation__leave="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 10 -2; startEvents:go"
-          animation__leave2="property:components.material.material.opacity; dur: 1000; easing: easeInCubic; loop:false; to: 0 ; startEvents: go"
-
+        animation__fadeout="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 10 -2; startEvents:fadeout"
       ></a-image>
       <a-image
         id="startBtn"
@@ -87,88 +80,164 @@
         position="0 1.2 -1.5"
         width="0.5"
         height="0.5"
-        proxy-event__click="event: click; to:#intro-screen; as: go "
         animation__click="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 5 1.2 -1.5; startEvents: click"
-        animation__click2="property:components.material.material.opacity; dur: 1000; easing: easeInCubic; loop:false; to: 0 ; startEvents: click"
       ></a-image>
       <a-entity
-      id="plum"
-      gltf-model="#plumblob"
-      position="0 -2.2 0"
-      scale="0.001 0.001 0.001"
-      animation-mixer="clip: Plumbob|PlumbobAction.001"
-      proxy-event__click-go="event: click; to:#resRoom; as: leave"
-     >
+        id="plum"
+        gltf-model="#plumblob"
+        position="0 2.2 0"
+        scale="0.001 0.001 0.001"
+        animation-mixer="clip: Plumbob|PlumbobAction.001"
+        proxy-event__click-go="event: click; to:#resRoom; as: leave"
+      >
       </a-entity>
+      <a-plane
+        id="propObj"
+        width="0.9"
+        height="1.6"
+        position="0 -2 -2.037"
+        material="src:#proposal"
+        animation__fadein="property:position; dur:1000; easing: easeInCubic; loop:False; to: 0 1.755 -2.037; startEvents:fadein"
+        animation__move1="property:position; dur:1000; easing: easeInCubic; loop:False; to: 0.508 1.755 -1.551; startEvents:moveOne"
+        animation__move2="property:position; dur:1000; easing: easeInCubic; loop:False; to: 0.000 2.644 -2.037; startEvents:moveTwo"
+        animation__move3="property:position; dur:1000; easing: easeInCubic; loop:False; to: 0 1.755 -2.037; startEvents:moveThree"
+      ></a-plane>
       <a-entity
-      id="resRoom"
-      gltf-model="#res"
-      position="-1.89 -2.5 -1.942"
-      scale="0.25 0.25 0.25"
-      animation__clickRoom="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 1.288 -1.942; startEvents: click"
-      animation__clickLeave="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 -2.5 -1.942; startEvents: leave"
+        id="resRoom"
+        gltf-model="#res"
+        position="-1.89 -2.5 -1.942"
+        scale="0.25 0.25 0.25"
+        animation__fadeIn="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 1.288 -1.942; startEvents: fadein"
+        animation__fadeOut="property:position; dur: 1000; easing: easeInCubic; loop:false; to: -1.89 -2.5 -1.942; startEvents: fadeout"
       ></a-entity>
-      <!-- <a-entity
-        text="value: Welcome!; color: #FFD500; align: center"
-        position="0 3 -4"
-        scale="6 6 6"
-        animation="property: object3D.position.y;
-          to: 3.2; 
-          dir: alternate; 
-          dur: 2000; 
-          loop: true"></a-entity>   -->
-      <!-- <a-entity 
-        gltf-model="#codey" 
-        position="0 2 -4" 
-        scale="0.5 0.5 0.5"
-        animation="property: object3D.position.y;
-          to: 2.2; 
-          dir: alternate; 
-          dur: 2000; 
-          loop: true"></a-entity>
-      <a-light 
-        type="point" 
-        intensity="2" 
-        position="2 4 4"></a-light> -->
-      <!-- Add entity here: -->
-      <!-- <a-sound src="#air" autoplay="true"></a-sound> -->
-      <!-- End of art -->
+      <a-entity
+        id="emojiObj"
+        gltf-model="#emoji"
+        position="0 -1.263 -2.079"
+        animation__fadeIn="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 0.537 -2.079; startEvents: fadein"
+        animation__fadeOut="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 -1.263 -2.079; startEvents: fadeout"
+      ></a-entity>
+      <a-entity
+        id="houseObj"
+        gltf-model="#house"
+        position="4.96 -8.2 -10.56"
+        scale="0.32 0.32 0.32"
+        animation__fadeIn="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 4.96 0.665 -10.56; startEvents: fadein"
+        animation__fadeout="property: material.opacity; from: 1; to: 0; dur: 1000; startEvents: fadeout"
+        animation__zoom="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 9.144 -1.318 2.027; startEvents: zoom"
+      ></a-entity>
+      <a-entity
+        id="memObj"
+        gltf-model="#mem"
+        material="shder:flat;"
+        position="0 -1 -0.655"
+        scale="0.7 0.7 0.7"
+        rotation="0 -180 0"
+        animation__fadeIn="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 1.49 -0.655; startEvents: fadein"
+        animation__fadeOut="property:position; dur: 1000; easing: easeInCubic; loop:false; to: 0 -1 -0.655; startEvents: fadeout"
+      ></a-entity>
     </a-scene>
+
     <script>
+      // self executing function here
+      (function () {
+        let vid = document.querySelector("#proposal");
+        vid.pause();
+      })();
+
       var start = document.querySelector("#startBtn");
       start.addEventListener("click", function (evt) {
         console.log("I clicked on btn ");
-        beginAnim()
+        var vid = document.querySelector("#proposal");
+        var vidObj = document.querySelector("#propObj");
+        var introObj = document.querySelector("#intro-screen");
+        vidObj.emit("fadein");
+        introObj.emit("fadeout");
+        destroyObj(introObj);
+        destroyObj(start);
+        vid.play();
+        beginAnim();
       });
 
-      function setClicky(obj){
-        obj.addEventListener("click", function (evt) {
-          console.log("Next triggered")
-      });
-      }
-
-      function destroyObj(obj){
+      function destroyObj(obj) {
         setTimeout(() => {
           obj.parentNode.removeChild(obj);
         }, 1500);
-        var sky = document.querySelector("#skyObj");
-          sky.emit('fadeout');
-          setTimeout(() => {
-            sky.setAttribute("src", "#paris")
-          sky.emit('fadein');
-          }, 1000);
+        // var sky = document.querySelector("#skyObj");
+        // sky.emit("fadeout");
+        // setTimeout(() => {
+        //   sky.setAttribute("src", "#paris");
+        //   sky.emit("fadein");
+        // }, 1000);
       }
 
-      function beginAnim(){
-        var resTime= 10000;
+      function beginAnim() {
+        var resStart = 19000;
+        var resLeave = 36000;
+        var emojiStart = 9000;
+        var houseStart = 20000;
+        var zoomTime = 6500;
+        var eiffel = 9000;
         var room = document.querySelector("#resRoom");
-        setClicky(room);
-        room.click();
-        
-        var plum = document.querySelector("#plum");
-        setClicky(plum)
-        setTimeout(function(){ plum.click(), destroyObj(room)  }, resTime);
+        var propVid = document.querySelector("#propObj");
+        var memObj = document.querySelector("#memObj");
+        var emojiObj = document.querySelector("#emojiObj");
+        var houseObj = document.querySelector("#houseObj");
+        var grassObj = document.querySelector("#grassObj");
+        var sky = document.querySelector("#skyObj");
+
+        setTimeout(() => {
+          fadeInObj(room);
+          propVid.emit("moveOne");
+
+          setTimeout(() => {
+            fadeOutObj(room);
+            destroyObj(room);
+            fadeInObj(memObj);
+            propVid.emit("moveTwo");
+
+            setTimeout(() => {
+              // CONTINUE HERE WITH ADDING EMOJIS, THEN HOUSE, THEN ZOOM, THE FADE OUT, THEN PARIS WITH FLOOR GONE, THEN BACK TO NORMAL
+              fadeInObj(emojiObj);
+
+              setTimeout(() => {
+                fadeOutObj(emojiObj);
+                fadeInObj(houseObj);
+                fadeOutObj(memObj);
+                destroyObj(emojiObj);
+                destroyObj(memObj);
+                propVid.emit("moveOne");
+
+                setTimeout(() => {
+                  houseObj.emit("zoom");
+
+                  setTimeout(() => {
+                    fadeOutObj(houseObj);
+                    fadeOutObj(grassObj);
+                    destroyObj(houseObj);
+                    destroyObj(grassObj);
+                    propVid.emit("moveThree");
+                    sky.emit("fadeout");
+                    setTimeout(() => {
+                      sky.setAttribute("src", "#paris");
+                      sky.emit("fadein");
+                    }, 1000);
+                  }, eiffel);
+                }, zoomTime);
+              }, houseStart);
+            }, emojiStart);
+          }, resLeave);
+        }, resStart);
       }
-  </script>
+
+      function fadeInObj(obj) {
+        obj.emit("fadein");
+        console.log("fading in");
+      }
+
+      function fadeOutObj(obj) {
+        obj.emit("fadeout");
+      }
+    </script>
   </body>
 </html>
